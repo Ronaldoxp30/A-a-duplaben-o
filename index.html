@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/Logo.jpg" type="image/x-icon">
+    <title>Açaí Dupla Benção</title>
+    
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #5e4b8a, #6b4f9c, #a97cb5);
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 3em;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            gap: 20px;
+        }
+
+        .item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            width: 250px;
+        }
+
+        .item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .item label {
+            display: block;
+            margin-top: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        select {
+            padding: 10px;
+            width: 100%;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.3);
+            color: #23e0d1;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #ff4757;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff6b81;
+            transform: scale(1.05);
+        }
+
+        #cart {
+            margin-top: 20px;
+            display: none;
+        }
+
+        #cartItems {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #cartItems li {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        #totalPrice {
+            font-weight: bold;
+        }
+
+        form {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .menu {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .item {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Açaí Dupla Benção</h1>
+        <img src="img/Logo-removebg-preview.png" alt="" width="200" height="auto">
+
+        <div class="menu">
+            <!-- Itens duplicados e ajustados -->
+            <div class="item">
+                <img src="img/Gotas de chocolate.jpg" alt="Gotas de Chocolate">
+                <label>Gotas de Chocolate</label>
+                <select id="size1">
+                    <option value="7">Pequeno (200ml) - R$ 7,00</option>
+                    <option value="8">Pequeno(240ml) - R$ 8,00</option>
+                    <option value="9">Médio (250ml) - R$ 9,00</option>
+                    <option value="15">Médio (300ml) - R$ 15,00</option>
+                    <option value="20">Médio (360ml) - R$ 20,00</option>
+                    <option value="25">Grande(400ml) - R$ 25,00</option>
+                    <option value="30">Grande (500ml) - R$ 30,00</option>
+                </select>
+                <button onclick="addToCart('Gotas de Chocolate', document.getElementById('size1').value, document.getElementById('size1').selectedOptions[0].text)">Adicionar ao Carrinho</button>
+            </div>
+
+            <!-- Outro item duplicado -->
+            <div class="item">
+                <img src="img/Castanhas.jpg" alt="Castanhas">
+                <label>Castanhas</label>
+                <select id="size2">
+                    <option value="7">Pequeno (200ml) - R$ 7,00</option>
+                    <option value="8">Pequeno(240ml) - R$ 8,00</option>
+                    <option value="9">Médio (250ml) - R$ 9,00</option>
+                    <option value="15">Médio (300ml) - R$ 15,00</option>
+                    <option value="20">Médio (360ml) - R$ 20,00</option>
+                    <option value="25">Grande(400ml) - R$ 25,00</option>
+                    <option value="30">Grande (500ml) - R$ 30,00</option>
+                </select>
+                <button onclick="addToCart('Castanhas', document.getElementById('size2').value, document.getElementById('size2').selectedOptions[0].text)">Adicionar ao Carrinho</button>
+            </div>
+            <div class="item">
+                <img src="img/Amendoim.jpg" alt="Amendoim">
+                <label>Amendoim</label>
+                <select id="size3">
+                    <option value="7">Pequeno (200ml) - R$ 7,00</option>
+                    <option value="8">Pequeno(240ml) - R$ 8,00</option>
+                    <option value="9">Médio (250ml) - R$ 9,00</option>
+                    <option value="15">Médio (300ml) - R$ 15,00</option>
+                    <option value="20">Médio (360ml) - R$ 20,00</option>
+                    <option value="25">Grande(400ml) - R$ 25,00</option>
+                    <option value="30">Grande (500ml) - R$ 30,00</option>
+                </select>
+                <button onclick="addToCart('Amendoim', document.getElementById('size3').value, document.getElementById('size3').selectedOptions[0].text)">Adicionar ao Carrinho</button>
+            </div>
+            <div class="item">
+                <img src="img/brigadeiro.jpg" alt="Brigadeiro">
+                <label>Brigadeiro</label>
+                <select id="size4">
+                    <option value="7">Pequeno (200ml) - R$ 7,00</option>
+                    <option value="8">Pequeno(240ml) - R$ 8,00</option>
+                    <option value="9">Médio (250ml) - R$ 9,00</option>
+                    <option value="15">Médio (300ml) - R$ 15,00</option>
+                    <option value="20">Médio (360ml) - R$ 20,00</option>
+                    <option value="25">Grande(400ml) - R$ 25,00</option>
+                    <option value="30">Grande (500ml) - R$ 30,00</option>
+                </select>
+                <button onclick="addToCart('Brigadeiro', document.getElementById('size4').value, document.getElementById('size4').selectedOptions[0].text)">Adicionar ao Carrinho</button>
+            </div>
+            <div class="item">
+                <img src="img/M&M.jpg" alt="M&M">
+                <label>M&M</label>
+                <select id="size5">
+                    <option value="7">Pequeno (200ml) - R$ 7,00</option>
+                    <option value="8">Pequeno(240ml) - R$ 8,00</option>
+                    <option value="9">Médio (250ml) - R$ 9,00</option>
+                    <option value="15">Médio (300ml) - R$ 15,00</option>
+                    <option value="20">Médio (360ml) - R$ 20,00</option>
+                    <option value="25">Grande(400ml) - R$ 25,00</option>
+                    <option value="30">Grande (500ml) - R$ 30,00</option>
+                </select>
+                <button onclick="addToCart('M&M', document.getElementById('size5').value, document.getElementById('size5').selectedOptions[0].text)">Adicionar ao Carrinho</button>
+            </div>
+            <div class="item">
+                <img src="img/Leite em pó.jpg" alt="Leite em pó">
+                <label>Leite em pó</label>
+                <select id="size6">
+                    <option value="7">Pequeno (200ml) - R$ 7,00</option>
+                    <option value="8">Pequeno(240ml) - R$ 8,00</option>
+                    <option value="9">Médio (250ml) - R$ 9,00</option>
+                    <option value="15">Médio (300ml) - R$ 15,00</option>
+                    <option value="20">Médio (360ml) - R$ 20,00</option>
+                    <option value="25">Grande(400ml) - R$ 25,00</option>
+                    <option value="30">Grande (500ml) - R$ 30,00</option>
+                </select>
+                <button onclick="addToCart('Leite em pó', document.getElementById('size6').value, document.getElementById('size6').selectedOptions[0].text)">Adicionar ao Carrinho</button>
+            </div>
+            <div class="item">
+                <img src="img/Granola.jpg" alt="Granola">
+                <label>Granola</label>
+                <select id="size7">
+                    <option value="7">Pequeno (200ml) - R$ 7,00</option>
+                    <option value="8">Pequeno(240ml) - R$ 8,00</option>
+                    <option value="9">Médio (250ml) - R$ 9,00</option>
+                    <option value="15">Médio (300ml) - R$ 15,00</option>
+                    <option value="20">Médio (360ml) - R$ 20,00</option>
+                    <option value="25">Grande(400ml) - R$ 25,00</option>
+                    <option value="30">Grande (500ml) - R$ 30,00</option>
+                </select>
+                <button onclick="addToCart('Granola', document.getElementById('size7').value, document.getElementById('size7').selectedOptions[0].text)">Adicionar ao Carrinho</button>
+            </div>
+            <div class="item">
+                <img src="img/Paçoca.jpg" alt="Paçoca">
+                <label>Paçoca</label>
+                <select id="size8">
+                    <option value="7">Pequeno (200ml) - R$ 7,00</option>
+                    <option value="8">Pequeno(240ml) - R$ 8,00</option>
+                    <option value="9">Médio (250ml) - R$ 9,00</option>
+                    <option value="15">Médio (300ml) - R$ 15,00</option>
+                    <option value="20">Médio (360ml) - R$ 20,00</option>
+                    <option value="25">Grande(400ml) - R$ 25,00</option>
+                    <option value="30">Grande (500ml) - R$ 30,00</option>
+                </select>
+                <button onclick="addToCart('Paçoca', document.getElementById('size8').value, document.getElementById('size8').selectedOptions[0].text)">Adicionar ao Carrinho</button>
+            </div>
+            <div class="item">
+                <img src="img/Cereal ball.jpg" alt="Cereal ball">
+                <label>Cereal ball</label>
+                <select id="size9">
+                    <option value="7">Pequeno (200ml) - R$ 7,00</option>
+                    <option value="8">Pequeno(240ml) - R$ 8,00</option>
+                    <option value="9">Médio (250ml) - R$ 9,00</option>
+                    <option value="15">Médio (300ml) - R$ 15,00</option>
+                    <option value="20">Médio (360ml) - R$ 20,00</option>
+                    <option value="25">Grande(400ml) - R$ 25,00</option>
+                    <option value="30">Grande (500ml) - R$ 30,00</option>
+                </select>
+                <button onclick="addToCart('Cereal ball', document.getElementById('size9').value, document.getElementById('size9').selectedOptions[0].text)">Adicionar ao Carrinho</button>
+            </div>
+            <div class="item">
+                <img src="img/Óreo.jpg" alt="Óreo">
+                <label>Óreo</label>
+                <select id="size10">
+                    <option value="7">Pequeno (200ml) - R$ 7,00</option>
+                    <option value="8">Pequeno(240ml) - R$ 8,00</option>
+                    <option value="9">Médio (250ml) - R$ 9,00</option>
+                    <option value="15">Médio (300ml) - R$ 15,00</option>
+                    <option value="20">Médio (360ml) - R$ 20,00</option>
+                    <option value="25">Grande(400ml) - R$ 25,00</option>
+                    <option value="30">Grande (500ml) - R$ 30,00</option>
+                </select>
+                <button onclick="addToCart('Óreo', document.getElementById('size10').value, document.getElementById('size10').selectedOptions[0].text)">Adicionar ao Carrinho</button>
+            </div>
+            <div class="item">
+                <img src="img/Cereal.jpg" alt="Cereal">
+                <label>Cereal</label>
+                <select id="size11">
+                    <option value="7">Pequeno (200ml) - R$ 7,00</option>
+                    <option value="8">Pequeno(240ml) - R$ 8,00</option>
+                    <option value="9">Médio (250ml) - R$ 9,00</option>
+                    <option value="15">Médio (300ml) - R$ 15,00</option>
+                    <option value="20">Médio (360ml) - R$ 20,00</option>
+                    <option value="25">Grande(400ml) - R$ 25,00</option>
+                    <option value="30">Grande (500ml) - R$ 30,00</option>
+                </select>
+                <button onclick="addToCart('Cereal', document.getElementById('size11').value, document.getElementById('size11').selectedOptions[0].text)">Adicionar ao Carrinho</button>
+            </div>
+            <div class="item">
+                <img src="img/Açaí gomas de fruta.jpg" alt="Açaí gomas de frutas">
+                <label>Açaí gomas de frutas</label>
+                <select id="size12">
+                    <option value="7">Pequeno (200ml) - R$ 7,00</option>
+                    <option value="8">Pequeno(240ml) - R$ 8,00</option>
+                    <option value="9">Médio (250ml) - R$ 9,00</option>
+                    <option value="15">Médio (300ml) - R$ 15,00</option>
+                    <option value="20">Médio (360ml) - R$ 20,00</option>
+                    <option value="25">Grande(400ml) - R$ 25,00</option>
+                    <option value="30">Grande (500ml) - R$ 30,00</option>
+                </select>
+                <button onclick="addToCart('Açaí gomas de frutas', document.getElementById('size12').value, document.getElementById('size12').selectedOptions[0].text)">Adicionar ao Carrinho</button>
+            </div>
+            <div class="item">
+                <img src="img/Wafer ctrufas.webp" alt="Wafer C/trufas">
+                <label>Wafer C/trufas</label>
+                <select id="size13">
+                    <option value="7">Pequeno (200ml) - R$ 7,00</option>
+                    <option value="8">Pequeno(240ml) - R$ 8,00</option>
+                    <option value="9">Médio (250ml) - R$ 9,00</option>
+                    <option value="15">Médio (300ml) - R$ 15,00</option>
+                    <option value="20">Médio (360ml) - R$ 20,00</option>
+                    <option value="25">Grande(400ml) - R$ 25,00</option>
+                    <option value="30">Grande (500ml) - R$ 30,00</option>
+                </select>
+                <button onclick="addToCart('Wafer C/trufas', document.getElementById('size13').value, document.getElementById('size13').selectedOptions[0].text)">Adicionar ao Carrinho</button>
+            </div>
+            <div class="item">
+                <img src="img/Tradicional.jpg" alt="Tradicional">
+                <label>Tradicional</label>
+                <select id="size14">
+                    <option value="7">Pequeno (200ml) - R$ 7,00</option>
+                    <option value="8">Pequeno(240ml) - R$ 8,00</option>
+                    <option value="9">Médio (250ml) - R$ 9,00</option>
+                    <option value="15">Médio (300ml) - R$ 15,00</option>
+                    <option value="20">Médio (360ml) - R$ 20,00</option>
+                    <option value="25">Grande(400ml) - R$ 25,00</option>
+                    <option value="30">Grande (500ml) - R$ 30,00</option>
+                </select>
+                <button onclick="addToCart('Tradicional', document.getElementById('size14').value, document.getElementById('size14').selectedOptions[0].text)">Adicionar ao Carrinho</button>
+            </div>
+            
+        </div>
+
+        <div id="cart">
+            <h2>Itens no Carrinho</h2>
+            <ul id="cartItems"></ul>
+            <p id="totalPrice">Total: R$ 0,00</p>
+
+            <!-- Formulário de endereço -->
+            <form id="orderForm" onsubmit="sendOrder(); return false;">
+                <h3>Endereço de Entrega</h3>
+                <input type="text" id="address" placeholder="Digite seu endereço" required>
+                <button type="submit">Enviar Pedido</button>
+            </form>
+        </div>
+    </div>
+    <footer style="background-color: #333; color: #fff; padding: 20px; text-align: center;">
+        <div>
+            <p>© 2024 Ronaldo Silva dos Santos. Todos os direitos reservados.</p>
+            <div>
+                <a href="https://www.instagram.com/rony_silva79/profilecard/?igsh=MjBwc2ozdGZiZ2wz" target="_blank" style="margin: 0 10px;">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Instagram" style="width: 30px; height: 30px;">
+                </a>
+                <a href="https://wa.me/73991161995" target="_blank" style="margin: 0 10px;">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png" alt="WhatsApp" style="width: 30px; height: 30px;">
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=100008265452387&mibextid=ZbWKwL" target="_blank" style="margin: 0 10px;">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png" alt="Facebook" style="width: 30px; height: 30px;">
+                </a>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+      let cart = [];
+let total = 0;
+
+function addToCart(name, price, sizeText) {
+    const item = { name, price: parseFloat(price), sizeText };
+    cart.push(item);
+    total += item.price;
+    displayCart();
+}
+
+function removeFromCart(index) {
+    total -= cart[index].price; // Subtrai o preço do item que está sendo removido
+    cart.splice(index, 1); // Remove o item do carrinho
+    displayCart();
+}
+
+function displayCart() {
+    const cartItems = document.getElementById('cartItems');
+    cartItems.innerHTML = '';
+    
+    cart.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} (${item.sizeText}) - R$ ${item.price.toFixed(2)}`;
+        
+        // Botão para remover o item
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remover';
+        removeButton.onclick = () => removeFromCart(index); // Chama a função para remover o item
+        
+        li.appendChild(removeButton);
+        cartItems.appendChild(li);
+    });
+
+    document.getElementById('totalPrice').textContent = `Total: R$ ${total.toFixed(2)}`;
+    document.getElementById('cart').style.display = cart.length ? 'block' : 'none';
+}
+
+function sendOrder() {
+    const address = document.getElementById('address').value;
+    if (!address) {
+        alert('Por favor, insira seu endereço.');
+        return;
+    }
+
+    let message = 'Pedido de Açaí:\n';
+    cart.forEach(item => {
+        message += `${item.name} (${item.sizeText}) - R$ ${item.price.toFixed(2)}\n`;
+    });
+    message += `💵Total: R$ ${total.toFixed(2)}\n`;
+    message += `🏠Endereço: ${address}`;
+
+    const whatsappUrl = `https://wa.me/7399678423?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl);
+}
+
+
+    </script>
+</body>
+</html>
