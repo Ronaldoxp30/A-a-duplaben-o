@@ -93,27 +93,144 @@
             background-color: #ff6b81;
             transform: scale(1.05);
         }
+    /* Ícone do Carrinho */
+#cartIcon {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 1.5em;
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        #cart {
-            margin-top: 20px;
-            display: none;
-        }
+/* Contador de itens no carrinho */
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #dc3545;
+    color: white;
+    font-size: 0.9em;
+    padding: 2px 6px;
+    border-radius: 50%;
+    display: inline-block;
+}
 
-        #cartItems {
-            list-style-type: none;
-            padding: 0;
-        }
+/* Conteúdo do Carrinho (inicialmente oculto) */
+#cartContent {
+    display: none; /* Oculto inicialmente */
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    width: 300px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    z-index: 999;
+}
 
-        #cartItems li {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-        }
+/* Título do Carrinho */
+#cartContent h2 {
+    color: #333;
+    text-align: center;
+}
 
-        #totalPrice {
-            font-weight: bold;
-        }
+/* Itens no Carrinho */
+#cartItems {
+    list-style-type: none;
+    padding: 0;
+}
+
+.cart-item {
+    background-color: #ffffff;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.remove-btn {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.remove-btn:hover {
+    background-color: #c82333;
+}
+
+/* Preço Total */
+#totalPrice {
+    font-weight: bold;
+    text-align: right;
+    font-size: 1.2em;
+    color: #333;
+}
+
+/* Formulário de Pedido */
+#orderForm {
+    margin-top: 15px;
+}
+
+#orderForm h3 {
+    font-size: 1.1em;
+    color: #333;
+}
+
+#address {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#address:focus {
+    border-color: #28a745; /* Cor de foco */
+}
+
+/* Botão Enviar Pedido */
+#sendOrderButton {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#sendOrderButton:hover {
+    background-color: #218838;
+}
+
+#sendOrderButton:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Sombra para foco */
+}
+
+
 
         form {
             margin-top: 20px;
@@ -351,18 +468,26 @@
             
         </div>
 
-        <div id="cart">
+        <div id="cartIcon" onclick="toggleCart()">
+            🛒
+            <span id="cartCount" class="cart-count">0</span>
+        </div>
+        
+        <!-- Conteúdo do Carrinho (inicialmente oculto) -->
+        <div id="cartContent">
             <h2>Itens no Carrinho</h2>
             <ul id="cartItems"></ul>
             <p id="totalPrice">Total: R$ 0,00</p>
-
+        
             <!-- Formulário de endereço -->
             <form id="orderForm" onsubmit="sendOrder(); return false;">
                 <h3>Endereço de Entrega</h3>
                 <input type="text" id="address" placeholder="Digite seu endereço" required>
-                <button type="submit">Enviar Pedido</button>
+                <button type="submit" id="sendOrderButton">Enviar Pedido</button>
             </form>
         </div>
+        
+
     </div>
     <footer style="background-color: #333; color: #fff; padding: 20px; text-align: center;">
         <div>
@@ -382,62 +507,78 @@
     </footer>
     
     <script>
-      let cart = [];
-let total = 0;
-
-function addToCart(name, price, sizeText) {
-    const item = { name, price: parseFloat(price), sizeText };
-    cart.push(item);
-    total += item.price;
-    displayCart();
-}
-
-function removeFromCart(index) {
-    total -= cart[index].price; // Subtrai o preço do item que está sendo removido
-    cart.splice(index, 1); // Remove o item do carrinho
-    displayCart();
-}
-
-function displayCart() {
-    const cartItems = document.getElementById('cartItems');
-    cartItems.innerHTML = '';
-    
-    cart.forEach((item, index) => {
-        const li = document.createElement('li');
-        li.textContent = `${item.name} (${item.sizeText}) - R$ ${item.price.toFixed(2)}`;
+        let cart = [];
+        let total = 0;
+        let cartCount = 0; // Contador de itens no carrinho
         
-        // Botão para remover o item
-        const removeButton = document.createElement('button');
-        removeButton.textContent = 'Remover';
-        removeButton.onclick = () => removeFromCart(index); // Chama a função para remover o item
+        function addToCart(name, price, sizeText) {
+            const item = { name, price: parseFloat(price), sizeText };
+            cart.push(item);
+            total += item.price;
+            cartCount++;  // Incrementa a quantidade
+            displayCart();
+            updateCartCount(); // Atualiza o contador no ícone
+        }
         
-        li.appendChild(removeButton);
-        cartItems.appendChild(li);
-    });
-
-    document.getElementById('totalPrice').textContent = `Total: R$ ${total.toFixed(2)}`;
-    document.getElementById('cart').style.display = cart.length ? 'block' : 'none';
-}
-
-function sendOrder() {
-    const address = document.getElementById('address').value;
-    if (!address) {
-        alert('Por favor, insira seu endereço.');
-        return;
-    }
-
-    let message = 'Pedido de Açaí:\n';
-    cart.forEach(item => {
-        message += `${item.name} (${item.sizeText}) - R$ ${item.price.toFixed(2)}\n`;
-    });
-    message += `💵Total: R$ ${total.toFixed(2)}\n`;
-    message += `🏠Endereço: ${address}`;
-
-    const whatsappUrl = `https://wa.me/7399678423?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl);
-}
-
-
-    </script>
+        function removeFromCart(index) {
+            total -= cart[index].price;
+            cart.splice(index, 1);
+            cartCount--; // Decrementa a quantidade
+            displayCart();
+            updateCartCount(); // Atualiza o contador no ícone
+        }
+        
+        function displayCart() {
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = '';
+            
+            cart.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.classList.add('cart-item');
+                li.textContent = `${item.name} (${item.sizeText}) - R$ ${item.price.toFixed(2)}`;
+                
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Remover';
+                removeButton.classList.add('remove-btn');
+                removeButton.onclick = () => removeFromCart(index);
+                
+                li.appendChild(removeButton);
+                cartItems.appendChild(li);
+            });
+        
+            document.getElementById('totalPrice').textContent = `Total: R$ ${total.toFixed(2)}`;
+        }
+        
+        function toggleCart() {
+            const cartContent = document.getElementById('cartContent');
+            cartContent.style.display = cartContent.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function sendOrder() {
+            const address = document.getElementById('address').value;
+            if (!address) {
+                alert('Por favor, insira seu endereço.');
+                return;
+            }
+        
+            let message = 'Pedido de Açaí:\n';
+            cart.forEach(item => {
+                message += `${item.name} (${item.sizeText}) - R$ ${item.price.toFixed(2)}\n`;
+            });
+            message += `💵Total: R$ ${total.toFixed(2)}\n`;
+            message += `🏠Endereço: ${address}`;
+        
+            const whatsappUrl = `https://wa.me/7399678423?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl);
+        }
+        
+        // Função para atualizar o contador de itens no ícone do carrinho
+        function updateCartCount() {
+            const cartCountElement = document.getElementById('cartCount');
+            cartCountElement.textContent = cartCount > 0 ? cartCount : ''; // Exibe o número ou esconde se for zero
+        }
+        </script>
+        
+        
 </body>
 </html>
